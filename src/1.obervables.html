@@ -31,7 +31,7 @@
 		<script>
 			var secondViewModel = {
 				personName: ko.observable('Bob'),
-				personAge: ko.observable('123')
+				personAge: ko.observable('123'),
 			};
 			ko.applyBindings(secondViewModel, $("#secondModel")[0]);
 		</script>
@@ -41,6 +41,18 @@
 			$($("#changeName").bind("click", function() {
 				secondViewModel.personName("Sunny");
 			}));
+			//通知
+			secondViewModel.personName.subscribe(function(oldValue) {
+				alert("The person's previous name is " + oldValue);
+			}, null, "beforeChange");
+			//扩展每次personName的值被写入，就通知一次
+			secondViewModel.personName.extend({
+				notify: 'always'
+			});
+			//使通知延时
+			secondViewModel.personName.extend({
+				rateLimit: 3600
+			});
 		</script>
 	</body>
 

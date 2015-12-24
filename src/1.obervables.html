@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>observables</title>
+		<script type="text/javascript" src="../js/knockout-3.4.0.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+	</head>
+
+	<body>
+		<div id="firstModel">
+			<div>The name is <span data-bind="text: personName"></span> </div>
+			<div>His age is<span data-bind="text:personAge"></span></div>
+		</div>
+		<br />
+		<div id="secondModel">
+			<div>The name is <span data-bind="text: personName"></span> </div>
+			<div>His age is<span data-bind="text:personAge"></span></div>
+		</div>
+		<button id="changeName">改变名字</button>
+		<!--第一个model-->
+		<script>
+			var firstViewModel = {
+				personName: 'Bob',
+				personAge: 123
+			};
+			ko.applyBindings(firstViewModel, $("#firstModel")[0]);
+		</script>
+		<!--第二个model-->
+		<script>
+			var secondViewModel = {
+				personName: ko.observable('Bob'),
+				personAge: ko.observable('123')
+			};
+			ko.applyBindings(secondViewModel, $("#secondModel")[0]);
+		</script>
+
+		<script>
+			//绑定click事件，改变personName
+			$($("#changeName").bind("click", function() {
+				secondViewModel.personName("Sunny");
+			}));
+		</script>
+	</body>
+
+</html>

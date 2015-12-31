@@ -13,62 +13,110 @@
 
 <body>
 <div class="container">
-    <div class="table">
-        <table class="table">
-            <caption>Optional table caption.</caption>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Fullname1</th>
-                <th>Fullname2</th>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td data-bind="text:firstName"></td>
-                <td data-bind="text:lastName"></td>
-                <td data-bind="text:fullName"></td>
-                <td data-bind="text:fullName2"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <a class="btn btn-danger" id="changeFristName">改变firstName</a>
-    <a class="btn btn-danger" id="changeLastName">改变lastName</a>
+    <!--visiable绑定-->
+    <ul class="list-group">
+        <li class="list-group-item-danger">
+            <div data-bind="visible: shouldShowMessage">
+                你能看到
+            </div>
+        </li>
+        <li class="list-group-item-danger">
+            <div data-bind="visible: shouldShowMessage1">
+                你能看到1
+            </div>
+        </li>
+        <li class="list-group-item-danger">
+            <div data-bind="visible: shouldShowMessage2">
+                你能看到2
+            </div>
+        </li>
+        <li class="list-group-item-danger">
+            <div data-bind="visible: shouldShowMessage3">
+                你能看到3
+            </div>
+        </li>
+        <li class="list-group-item-danger">
+            <div data-bind="visible: shouldShowMessage4">
+                你能看到4
+            </div>
+        </li>
+        <li class="list-group-item-danger">
+            <div data-bind="visible: shouldShowMessage5">
+                你能看到5
+            </div>
+        </li>
+    </ul>
+    <a class="btn btn-danger" id="show">显示没有显示的</a>
+
+
+    <!--text绑定-->
+    <!--绑定会覆盖你节点中的值-->
+    <p class="text-muted text-warning">这是第<span data-bind="text:index">1</span>个例子</p>
+    <!--该处绑定的是一个对象，那么就会调用他的toString方法，返回一个字符串，进行绑定-->
+    <p class="text-muted text-warning">这是一个object的绑定<span data-bind="text:object"></span></p>
+
+    <p>The item is <span data-bind="text: price()  > 50 ? '贵' : '便宜'"></span> today.</p>
+    <!--可以使用虚节点，这样这个绑定不需要一个容器套在他上面-->
+    <!--ko  text:text--><!--/ko-->
+
+
+    <!--html绑定，需要确保是安全的html，而不是别人插入你数据库的，防止脚本注入攻击-->
+    <div data-bind="html: details"></div>
+    <!--css绑定-->
+    <!--可以添加几个class，当后面条件满足时就起作用-->
+    <!--不符合JavaScript命名规范的css变量名需要加上''，不然会失效-->
+    <p data-bind="css: {'text-danger text-center':price()>50 }">价格高于50就显示红色</p>
+    <a class="btn btn-danger" id="upPrice">提高价格</a>
+    <a class="btn btn-danger" id="downPrice">降低价格</a>
+    <!--style绑定-->
+    <p data-bind="style:{color:price() >50?'red ':'black',textDecoration: 'line-through' }">价格高于50就显示红色</p>
+    <!--attr绑定-->
+    <a data-bind="attr:{'id':attr().id,'title':attr().title,'href':attr().href}">属性绑定,点击可直通百度</a>
 </div>
 
 <script>
 
     $(function () {
-        $("#changeFristName").bind("click", function () {
-            model.firstName("JIM");
+        $("#show").bind("click", function () {
+            model.shouldShowMessage1(true);
+            model.shouldShowMessage2(1);
+            model.shouldShowMessage3("ddd");
+            model.shouldShowMessage4(new Object());
+            model.shouldShowMessage5("ddd");
         });
-        $("#changeLastName").bind("click", function () {
-            model.lastName("Black");
+        $("#upPrice").bind("click", function () {
+            model.price(500);
+        });
+        $("#downPrice").bind("click", function () {
+            model.price(0);
         });
 
     });
+    var obj = {
+        name: "jam", age: 16, toString: function () {
+            return "name=" + this.name + ",age=" + this.age;
+        }
+    }
     function Model() {
         var self = this;
-        self.firstName = ko.observable('Bob');
-        self.lastName = ko.observable('Smith');
-        //双向绑定
-        self.fullName = ko.computed(function () {
-            return self.firstName() + " " + self.lastName();
-        }, self);
-        //如果只是想展示在view上
-        self.fullName2 =
-                self.firstName() + " " + self.lastName();
-        self.fullName3 = ko.writeablecomputed(function () {
-            return self.firstName() + " " + self.lastName();
-        }, self);
+        self.shouldShowMessage = ko.observable(true);
+        self.shouldShowMessage1 = ko.observable(false);
+        self.shouldShowMessage2 = ko.observable(0);
+        self.shouldShowMessage3 = ko.observable(undefined);
+        self.shouldShowMessage4 = ko.observable(null);
+        self.shouldShowMessage5 = ko.observable("");
+        self.index = 4;
+        self.object = obj;
+        self.price = ko.observable(20);
+        self.text = "这不是一行注释";
+        self.details = "<strong class='text-warning'>这是一行通过html绑定显示出来的 </strong>";
+        self.attr = ko.observable({id: 1, title: 'title', href: 'http://www.baidu.com'});
     }
     var model = new Model();
     ko.applyBindings(model);
 
+
 </script>
 </body>
 
-</html>
+< / html >

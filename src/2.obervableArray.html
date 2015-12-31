@@ -6,7 +6,7 @@
     <title>observables</title>
     <script type="text/javascript" src="../js/knockout-3.4.0.js"></script>
     <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
-<link rel="stylesheet" href="../">
+    <link rel="stylesheet" href="../">
 </head>
 
 <body>
@@ -17,10 +17,9 @@
 <input type="button" value="length" id="length">
 <input type="button" value="getElementByIndex" id="getElementByIndex">
 <input type="button" value="splice" id="splice">
-<!--<input type="button" value="数组操作" id="arrayOperate">
-<input type="button" value="数组操作" id="arrayOperate">
-<input type="button" value="数组操作" id="arrayOperate">
-<input type="button" value="数组操作" id="arrayOperate">-->
+<input type="button" value="indexOf" id="indexOf">
+<input type="button" value="slice" id="slice">
+
 <script>
     function Model() {
         var self = this;
@@ -48,18 +47,14 @@
             model.myObservableArray.splice(0, 1);
 
         });
-   /*     $("#arrayOperate").bind("click", function () {
+        $("#indexOf").bind("click", function () {
 
-
+            alert("Some的index为" + model.myObservableArray.indexOf("Some "));
         });
-        $("#arrayOperate").bind("click", function () {
+        $("#slice").bind("click", function () {
 
-
+            alert( "slice后返回的是："+ model.myObservableArray.slice(0, 2));
         });
-        $("#arrayOperate").bind("click", function () {
-
-
-        });*/
     });
 </script>
 </body>

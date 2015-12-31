@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> foreach</title>
+    <script type="text/javascript" src="../js/knockout-3.4.0.debug.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css.map">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap-theme.css.map">
+
+
+</head>
+
+<body>
+<div class="container">
+    <table class="table table-bordered table-striped table-hover  ">
+        <thead>
+        <tr>
+            <th>index</th>
+            <th>firstName</th>
+            <th>lastName</th>
+
+        </tr>
+        </thead>
+        <tbody data-bind="foreach:people">
+        <tr>
+            <td data-bind="text:$index()+1"></td>
+            <td data-bind="text:firstName"></td>
+            <td data-bind="text:lastName"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- $data就是当前循环到的对象，$index就是他的索引-->
+    <table class="table table-bordered table-striped table-hover  ">
+        <thead>
+        <tr>
+            <th>index</th>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach:people">
+        <tr>
+            <td data-bind="text:$index()+1"></td>
+            <td data-bind="text:$data.firstName"></td>
+            <td data-bind="text:$data.lastName"></td>
+            <td><a data-bind="click:$parent.remove " class="text-warning">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-striped table-hover  ">
+        <thead>
+        <tr>
+            <th>index</th>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach:{data:people , as :'p'}">
+        <tr>
+            <td data-bind="text:$index()+1"></td>
+            <td data-bind="text:p.firstName"></td>
+            <td data-bind="text:p.lastName"></td>
+            <td><a data-bind="click:$parent.remove " class="text-warning">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-warning" id="setNull">点击把people设为空</a>
+</div>
+
+<script>
+
+    $(function () {
+        $("#setNull").bind("click", function () {
+            model.people('');
+        });
+        /*  $("#upPrice").bind("click", function () {
+         model.price(500);
+         });
+         $("#downPrice").bind("click", function () {
+         model.price(0);
+         });*/
+
+    });
+
+    function Model() {
+        var self = this;
+        self.people = ko.observableArray([
+            {firstName: 'Bert', lastName: 'Bertington'},
+            {firstName: 'Charles', lastName: 'Charlesforth'},
+            {firstName: 'Denise', lastName: 'Dentiste'}
+        ]);
+        self.remove = function () {
+            self.people.remove(this);
+        };
+    }
+    var model = new Model();
+    ko.applyBindings(model);
+
+
+</script>
+</body>
+
+</html>

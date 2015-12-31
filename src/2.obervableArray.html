@@ -1,39 +1,67 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title>observables</title>
-		<script type="text/javascript" src="../js/knockout-3.4.0.js"></script>
-		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>observables</title>
+    <script type="text/javascript" src="../js/knockout-3.4.0.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" href="../">
+</head>
 
-	</head>
+<body>
+<div data-bind="foreach:{data:myObservableArray(), as :'item'} ">
+    <div data-bind="text:item"></div>
+</div>
+<input type="button" value="push" id="push">
+<input type="button" value="length" id="length">
+<input type="button" value="getElementByIndex" id="getElementByIndex">
+<input type="button" value="splice" id="splice">
+<!--<input type="button" value="数组操作" id="arrayOperate">
+<input type="button" value="数组操作" id="arrayOperate">
+<input type="button" value="数组操作" id="arrayOperate">
+<input type="button" value="数组操作" id="arrayOperate">-->
+<script>
+    function Model() {
+        var self = this;
+        self.myObservableArray = ko.observableArray('');
+        self.myObservableArray.push('Some value');
+        self.myObservableArray.push('Some ');
+    }
+    var model = new Model();
+    ko.applyBindings(model);
+    $(function () {
+        $("#push").bind("click", function () {
+            model.myObservableArray.push("1");
 
-	<body>
-		<div data-bind="foreach:{data:myObservableArray(), as :'item'} ">
-			<div data-bind="text:item"></div>
-		</div>
-		<input type="button" value="数组操作" id="arrayOperate">
-		<script>
-			function Model() {
-				var self = this;
-				self.myObservableArray = ko.observableArray('');
-				self.myObservableArray.push('Some value');
-				self.myObservableArray.push('Some ');
-			}
-			var model = new Model();
-			ko.applyBindings(model);
-			$(function() {
-				$("#arrayOperate").bind("click", function() {
-					model.myObservableArray.push("1");
-					alert('The length of the array is ' + model.myObservableArray().length);
-					alert('The first element is ' + model.myObservableArray()[0]);
-					model.myObservableArray.splice(0, 1);
-					alert('The length of the array is ' + model.myObservableArray().length);
-					alert('The first element is ' + model.myObservableArray()[0]);
-				})
-			});
-		</script>
-	</body>
+        });
+        $("#length").bind("click", function () {
+            alert('The length of the array is ' + model.myObservableArray().length);
+
+        });
+        $("#getElementByIndex").bind("click", function () {
+            alert('The first element is ' + model.myObservableArray()[0]);
+
+        });
+        $("#splice").bind("click", function () {
+
+            model.myObservableArray.splice(0, 1);
+
+        });
+   /*     $("#arrayOperate").bind("click", function () {
+
+
+        });
+        $("#arrayOperate").bind("click", function () {
+
+
+        });
+        $("#arrayOperate").bind("click", function () {
+
+
+        });*/
+    });
+</script>
+</body>
 
 </html>

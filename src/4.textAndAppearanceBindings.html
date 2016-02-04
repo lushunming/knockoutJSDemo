@@ -43,7 +43,7 @@
             </div>
         </li>
         <li class="list-group-item-danger">
-            <div data-bind="visible: shouldShowMessage5">
+            <div data-bind="visible: shouldShowMessage5()">
                 你能看到5
             </div>
         </li>
@@ -84,7 +84,7 @@
             model.shouldShowMessage2(1);
             model.shouldShowMessage3("ddd");
             model.shouldShowMessage4(new Object());
-            model.shouldShowMessage5("ddd");
+           // model.shouldShowMessage5("ddd");
         });
         $("#upPrice").bind("click", function () {
             model.price(500);
@@ -106,7 +106,9 @@
         self.shouldShowMessage2 = ko.observable(0);
         self.shouldShowMessage3 = ko.observable(undefined);
         self.shouldShowMessage4 = ko.observable(null);
-        self.shouldShowMessage5 = ko.observable("");
+        self.shouldShowMessage5 = function(){
+        	//return 1;
+        };
         self.index = 4;
         self.object = obj;
         self.price = ko.observable(20);

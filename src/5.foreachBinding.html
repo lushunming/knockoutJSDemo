@@ -49,7 +49,7 @@
             <td data-bind="text:$index()+1"></td>
             <td data-bind="text:$data.firstName"></td>
             <td data-bind="text:$data.lastName"></td>
-            <td><a data-bind="click:$parent.remove " class="text-warning">删除</a></td>
+            <td><a data-bind="click:$parent.remove "  href='#' class="text-warning">删除</a></td>
         </tr>
         </tbody>
     </table>
@@ -67,7 +67,7 @@
             <td data-bind="text:$index()+1"></td>
             <td data-bind="text:p.firstName"></td>
             <td data-bind="text:p.lastName"></td>
-            <td><a data-bind="click:$parent.remove " class="text-warning">删除</a></td>
+            <td><a data-bind="click:$parent.remove " href='#' class="text-warning">删除</a></td>
         </tr>
         </tbody>
     </table>
@@ -96,7 +96,7 @@
             {firstName: 'Charles', lastName: 'Charlesforth'},
             {firstName: 'Denise', lastName: 'Dentiste'}
         ]);
-        self.remove = function () {
+        self.remove = function (data,target) {
             self.people.remove(this);
         };
     }

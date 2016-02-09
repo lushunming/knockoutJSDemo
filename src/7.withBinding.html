@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> foreach</title>
+    <script type="text/javascript" src="../js/knockout-3.4.0.debug.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css.map">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap-theme.css.map">
+
+</head>
+
+<body>
+    <h1 data-bind="text: city"> </h1>
+    <p data-bind="with: coords">
+        Latitude: <span data-bind="text: latitude"> </span>, Longitude: <span data-bind="text: longitude"> </span>
+    </p>
+    <script>
+        $(function() {});
+        function Model() {
+            var self = this;
+            city=ko.observable( "London");
+                coords=ko.observable( {
+                    latitude: 51.5001524,
+                    longitude: -0.1262362
+                });
+        }
+        var model = new Model();
+        ko.applyBindings(model);
+
+    </script>
+</body>
+
+</html>

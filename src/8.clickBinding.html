@@ -17,24 +17,113 @@
 <body>
     <div>
         You've clicked <span data-bind="text: numberOfClicks"></span> times
-        <button data-bind="click: incrementClickCounter">Click me</button>
+        <button class="btn btn-success" data-bind="click: incrementClickCounter">Click me</button>
     </div>
+    <button class="btn btn-success" data-bind="click:clicked">点击我</button>
+    <button class="btn btn-success" data-bind="click:person.showNameAndAge.apply(person);">显示信息</button>
+    <ul data-bind="foreach: places">
+        <li>
+            <span data-bind="text: $data"></span>
+            <button class="btn btn-success" data-bind="click: $parent.removePlace">Remove</button>
+        </li>
+    </ul>
 
+    <button class="btn btn-success" data-bind="click: myFunction">
+        Click me
+    </button>
+    <button class="btn btn-success" data-bind="click: function(data, event) { myFunction2('param1', 'param2', data, event) }">
+        Click me2
+    </button>
+    <button class="btn btn-success" data-bind="click: myFunction3.bind($data, 'param1', 'param2')">
+        Click me3
+    </button>
+    <a class="btn btn-link" href="http://www.baidu.com" data-bind="click:aclick">baidu.com</a>
 
+    <!--    有冒泡-->
+    <div  class="btn btn-danger" data-bind="click: myDivHandler">
+        <button class="btn btn-danger" data-bind="click: myButtonHandler">
+            Click me
+        </button>
+    </div>
+    <!--    禁用冒泡-->
+    <div class="btn btn-danger" data-bind="click: myDivHandler">
+        <button  class="btn btn-danger" data-bind="click: myButtonHandler, clickBubble: false">
+            Click me
+        </button>
+    </div>
     <script>
-        $(function() {});
+        $(function () {});
+        //弹出弹窗已被点击
+        function clicked() {
+            alert("已经被点击");
+        }
+        var person = {
+
+            name: "lu",
+            age: 12,
+            showNameAndAge: function () {
+                var self=this;
+                   alert("name:" + self.name + "-------age" + self.age);
+               // alert("this is person's function ");
+            }
+
+        };
+
         function Model() {
             var self = this;
+            self.places = ko.observableArray(['London', 'Paris', 'Tokyo']);
+
+            // The current item will be passed as the first parameter, so we know which place to remove
+            self.removePlace = function (place) {
+                self.places.remove(place)
+                console.log(place);
+            }
             self.numberOfClicks = ko.observable(0);
-            self.incrementClickCounter = function() {
+            self.incrementClickCounter = function () {
                 var previousCount = self.numberOfClicks();
                 self.numberOfClicks(previousCount + 1);
             };
+            self.myFunction = function (data, event) {
+                console.log("-------------------------------------------");
+                console.log("data:");
+                console.log(data);
+                console.log("event:" + event);
+                console.log(event);
+            };
+            self.myFunction2 = function (param1, param2, data, event) {
+                console.log("-------------------------------------------");
+                console.log("param1:");
+                console.log(param1);
+                console.log("param2:");
+                console.log(param2);
+                console.log("data:");
+                console.log(data);
+                console.log("event:" + event);
+                console.log(event);
+            };
+            // 最后两个参数是data和event参数，前面的是自己传入的参数
+            self.myFunction3 = function (param, param1, data, event) {
+                console.log(param);
+                console.log(param1);
+                console.log(data);
+                console.log(event);
+
+            };
+            self.aclick = function () {
+                alert("你点击了一个链接，但是没有跳转到超链接");
+            };
+            self.myDivHandler = function () {
+                alert("div click");
+            };
+            self.myButtonHandler = function () {
+                alert("button click");
+            }
 
         }
         var model = new Model();
-        ko.applyBindings(model);
+        ko.options.useOnlyNativeEvents = true;
 
+        ko.applyBindings(model);
     </script>
 </body>
 

@@ -23,16 +23,28 @@
             Your cellphone number:
             <input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
         </p>
+
+        <button data-bind="enable: parseAreaCode(model.cellphoneNumber()) != '555'">
+            Do something
+        </button>
+
+
     </div>
     <script>
+        function parseAreaCode(number) {
+            return number;
+        }
+
         function Model() {
             var self = this;
-            self.hasCellphone = ko.observable(false),
-                self.cellphoneNumber = ""
+            self.hasCellphone = ko.observable(false);
+            self.cellphoneNumber = ko.observable("");
         }
         var model = new Model();
         ko.applyBindings(model);
+
     </script>
 </body>
+
 
 </html>

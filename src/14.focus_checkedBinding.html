@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> foreach</title>
+    <script type="text/javascript" src="../js/knockout-3.4.0.debug.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css.map">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap-theme.css.map">
+
+</head>
+
+<body>
+    <div class="container">
+        <input data-bind="hasFocus: isSelected" />
+        <button data-bind="click: setIsSelected">Focus programmatically</button>
+        <span data-bind="visible: isSelected">The textbox has focus</span>
+        <p>
+            Name:
+            <b data-bind="visible: !editing(), text: name, click: edit">&nbsp;</b>
+            <input data-bind="visible: editing, value: name, hasFocus: editing" />
+        </p>
+
+        <p><em>Click the name to edit it; click elsewhere to apply changes.</em></p>
+        <div>_______________________________________________________</div>
+        <p>Send me spam:
+            <input type="checkbox" data-bind="checked: wantsSpam" />
+        </p>
+        <div data-bind="visible: wantsSpam">
+            Preferred flavors of spam:
+            <div>
+                <input type="checkbox" value="1" data-bind="checked: spamFlavors" /> Cherry</div>
+            <div>
+                <input type="checkbox" value="2" data-bind="checked: spamFlavors" /> Almond</div>
+            <div>
+                <input type="checkbox" value="3" data-bind="checked: spamFlavors" /> Monosodium Glutamate</div>
+        </div>
+
+        <div>_______________________________________________________</div>
+        <!-- ko foreach: items -->
+        <input type="checkbox" data-bind="checkedValue: $data, checked: $root.chosenItems" />
+        <span data-bind="text: itemName"></span>
+        <!-- /ko -->
+    </div>
+    <script>
+        function Model() {
+            var self = this;
+            self.isSelected = ko.observable(false);
+            self.setIsSelected = function() {
+                    this.isSelected(true)
+                }
+                // Data
+            self.name = ko.observable("jamas");
+            self.editing = ko.observable(false);
+
+            // Behaviors
+            self.edit = function() {
+                this.editing(true)
+            };
+            self.wantsSpam = ko.observable(true);
+            self.spamFlavors = ko.observableArray(["1", "2"]);
+            self.items = ko.observableArray([{
+                itemName: 'Choice 1'
+            }, {
+                itemName: 'Choice 2'
+            }]);
+            self.chosenItems = ko.observableArray();
+
+        }
+        var model = new Model();
+        ko.applyBindings(model);
+    </script>
+</body>
+
+
+</html>

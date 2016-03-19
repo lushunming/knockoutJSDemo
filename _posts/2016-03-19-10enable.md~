@@ -1,0 +1,47 @@
+---
+layout: post
+title: knockoutjs十  enable绑定
+---
+#knockoutjs十  enable绑定
+
+enable绑定用在 input, select, and textarea这些form元素上，当enable绑定的值是非空类的值时，那么这些元素就是enable的，否则就是disable的。
+```
+
+
+
+ <div class="container">
+        <p>
+            <input type='checkbox' data-bind="checked: hasCellphone" /> I have a cellphone
+        </p>
+        <p>
+            Your cellphone number:
+            <input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
+        </p>
+    </div>
+     <script>
+        function parseAreaCode(number) {
+            return number;
+        }
+
+        function Model() {
+            var self = this;
+            self.hasCellphone = ko.observable(false);
+            self.cellphoneNumber = ko.observable("");
+        }
+        var model = new Model();
+        ko.applyBindings(model);
+
+    </script>
+
+```
+其实enable的绑定很简单，disable的用法正好和他相反，所以就不再重复介绍。
+但是其实enable绑定的值不仅仅可以是一个值，还可以时一个表达式。
+```
+<button data-bind="enable: parseAreaCode(viewModel.cellphoneNumber()) != '555'">
+    Do something
+</button>
+
+```
+这个例子中就是parseAreaCode(viewModel.cellphoneNumber()) != '555'这个表达式的值是true的时候button才会enable，不然就是disable的。
+代码托管在https://github.com/lushunming/knockoutJSDemo.git可以直接克隆。希望大家有意见可以留言，有疑问或者错误可以加我的qq1357197829和我交流。
+

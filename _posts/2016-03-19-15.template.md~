@@ -1,0 +1,61 @@
+---
+layout: post
+title:knockoutjs十五  template
+---
+#knockoutjs十五  template
+
+
+template 是很重要的一个用法，last but not least，他使我们的代码更加的简洁，我们在写代码的时候，经常会遇到很多的重复代码，我们总是重复的写，浪费事件也不容易维护，那么我们就做成膜版，多用于循环之类的。
+    
+```
+       <div class="container">
+        <div class="row">
+            <ul data-bind='template: { name: displayMode,
+                           foreach: employees ,as:"employee"}'> </ul>
+        </div>
+
+        <script type="text/html" id="active">
+            <a data-bind="text:employee.name" class="active btn btn-success"></a>
+            <span data-bind="text:employee.active"></span>
+        </script>
+        <script type="text/html" id="inactive">
+            <a data-bind="text:employee.name" class="disabled btn btn-default"></a>
+              <span data-bind="text:employee.active"></span>
+        </script>
+    </div>
+    <script>
+        function Model() {
+            var self = this;
+            self.employees = ko.observableArray([{
+                name: "Kari",
+                active: ko.observable(true)
+            }, {
+                name: "Brynn",
+                active: ko.observable(false)
+            }, {
+                name: "Nora",
+                active: ko.observable(false)
+            }]);
+            self.displayMode = function(employee) {
+                // Initially "Kari" uses the "active" template, while the others use "inactive"
+                return employee.active() ? "active" : "inactive";
+            };
+
+        }
+        var model = new Model();
+        ko.applyBindings(model);
+
+    </script>
+    
+```
+上面的一个例子是我抄的官网的一个例子，他可以实现了动态的切换模板，其实就是动态的切换name而已。
+- 参数name 是你想引用的模板的id
+- 参数nodes 可以直接传入一个dom的数组直接作为模板，但是我觉得这么什么价值，既然使用了模板就是为了提取出来，我感觉官方这个设计多此一举
+- 参数data就是你要放模板数据
+- 参数if 只有当为true或者是true like的值的时候模板才会渲染。
+- 参数foreach 这是我们用来做循环的，和foreach的用法一致，
+- 参数as 当使用佛reach的时候，我们申明一个依赖
+- 参数afterRender, afterAdd, or beforeRemove 这是几个回调方法，有一个参数elements ，代表的时刚刚渲染的dom节点的数组    
+ko还支持使用别的template模板，比如 Underscore.js 的模板引擎，可以自行学习。
+
+基本所有经常使用的知识我都介绍了，这个系列也算是完结了，还有一些高级的应用我也没有接触过，所以这个系列就暂时到此结束，maybe someday i will be back。谢谢大家的支持，这个系列将会在github pages维护。有误请联系我qq1357197829，我准备过一段时间把这个系列搬到github pages上了，到时候希望大家赏脸。代码托管在https://github.com/lushunming/knockoutJSDemo.git可以直接克隆。

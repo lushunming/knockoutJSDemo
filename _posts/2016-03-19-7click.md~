@@ -1,0 +1,176 @@
+---
+layout: post
+title: knockoutjs七  click 绑定
+---
+#knockoutjs七  click 绑定
+今天要讲的是click绑定。
+先看一个例子：
+
+```
+
+
+    <div>
+        You've clicked <span data-bind="text: numberOfClicks"></span> times
+        <button class="btn btn-success" data-bind="click: incrementClickCounter">Click me</button>
+    </div>
+    <script>
+        self.numberOfClicks = ko.observable(0);
+        self.incrementClickCounter = function () {
+                var previousCount = self.numberOfClicks();
+                self.numberOfClicks(previousCount + 1);
+            };
+    </script>
+
+```
+点击绑定就是这么简单，在点击事件中可以修改model中的值，这样view也会随之改变。
+
+点击绑定可以绑定任何一个方法，不仅仅是viewmodel中的方法，看看下面的这个例子：
+```
+ <button class="btn btn-success" data-bind="click:clicked">点击我</button>
+ <script>
+ function clicked() {
+            alert("已经被点击");
+        }
+</script>
+
+
+```
+
+这个直接是调用了一个全局方法。
+下面的例子演示怎么调用一个对象中的方法：
+```
+<button class="btn btn-success" data-bind="click:person.showNameAndAge.apply(person);">显示信息</button>
+
+<script>
+ var person = {
+
+            name: "lu",
+            age: 12,
+            showNameAndAge: function () {
+                var self = this;
+                alert("name:" + self.name + "-------age" + self.age);
+                // alert("this is person's function ");
+            }
+
+        };
+</script>
+
+
+```
+这个例子调用了person对象的方法显示这个人的信息，但是要记得调用的时候showNameAndAge中的this指向的是当前被点击的对象，所以我是用了apply来切换了调用的对象为person，这样才能获取到对象中的name和age属性。
+
+```
+  <ul data-bind="foreach: places">
+        <li>
+            <span data-bind="text: $data"></span>
+            <button class="btn btn-success" data-bind="click: $parent.removePlace">Remove</button>
+        </li>
+    </ul>
+    <script>
+    
+      self.places = ko.observableArray(['London', 'Paris', 'Tokyo']);
+
+            // The current item will be passed as the first parameter, so we know which place to remove
+            self.removePlace = function (place) {
+                self.places.remove(place)
+                console.log(place);
+            }
+    </script>
+
+```
+这例子显告诉我们click绑定第一个参数是当前绑定的上下文。
+当然其实有两个参数，一个是data，一个是event。看下面的例子：
+```
+  <button class="btn btn-success" data-bind="click: myFunction">
+        Click me
+    </button>
+<script> 
+self.myFunction = function (data, event) {
+                console.log("-------------------------------------------");
+                console.log("data:");
+                console.log(data);
+                console.log("event:" + event);
+                console.log(event);
+            };
+</script>
+
+```
+用event.currentTarget可以获取到当前被点击到的节点。
+
+```
+ <button class="btn btn-success" data-bind="click: function(data, event) { myFunction2('param1', 'param2', data, event) }">
+        Click me2
+    </button>
+    <button class="btn btn-success" data-bind="click: myFunction3.bind($data, 'param1', 'param2')">
+        Click me3
+    </button>
+
+
+<script>
+      self.myFunction2 = function (param1, param2, data, event) {
+                console.log("-------------------------------------------");
+                console.log("param1:");
+                console.log(param1);
+                console.log("param2:");
+                console.log(param2);
+                console.log("data:");
+                console.log(data);
+                console.log("event:" + event);
+                console.log(event);
+            };
+            // 最后两个参数是data和event参数，前面的是自己传入的参数
+            self.myFunction3 = function (param, param1, data, event) {
+                console.log(param);
+                console.log(param1);
+                console.log(data);
+                console.log(event);
+
+            };
+</script>
+
+```
+第一个例子可以用这种方法传入自己的参数，当然你不喜欢在绑定的时候出现function这个字段，可以用bind来绑定。最后俩个参数是data和event，前面的参数是自己的参数。
+click绑定是会屏蔽原来的点击事件的，比如一个a标签，他的超链接就会被屏蔽：
+```
+ <a class="btn btn-link" href="http://www.baidu.com" data-bind="click:aclick">baidu.com</a>
+<script>
+  self.aclick = function () {
+                alert("你点击了一个链接，但是没有跳转到超链接");
+            };
+            
+</script>
+```
+这个超链接只会响应点击事件，而不会跳转到百度首页。
+
+点击事件会有冒泡反应，要是想禁用冒泡就在后面加上clickBubble：false，这样就不会有冒泡。
+
+
+```
+ <!--    有冒泡-->
+    <div class="btn btn-danger" data-bind="click: myDivHandler">
+        <button class="btn btn-danger" data-bind="click: myButtonHandler">
+            Click me
+        </button>
+    </div>
+    <!--    禁用冒泡-->
+    <div class="btn btn-danger" data-bind="click: myDivHandler">
+        <button class="btn btn-danger" data-bind="click: myButtonHandler, clickBubble: false">
+            Click me
+        </button>
+    </div>
+<script>
+ self.myDivHandler = function () {
+                alert("div click");
+            };
+            self.myButtonHandler = function () {
+                alert("button click");
+            }
+</script>
+
+```
+最后一个要注意的是在调用applyBindings前调用 ko.options.useOnlyNativeEvents = true;这样就是用原生的onclick，而ko默认是使用的jquery的click事件，但是我不知道这两者之间有什么差别，希望有懂的人可以和我交流。
+今天的东西比较多，代码托管在https://github.com/lushunming/knockoutJSDemo.git可以直接克隆。希望大家有意见可以留言，有疑问或者错误可以加我的qq1357197829和我交流。
+
+
+
+

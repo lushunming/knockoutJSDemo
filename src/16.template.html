@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> foreach</title>
+    <script type="text/javascript" src="../js/knockout-3.4.0.debug.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap.css.map">
+    <link rel="stylesheet" href="../js/bootstrap-3.3.5-dist/css/bootstrap-theme.css.map">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <ul data-bind='template: { name: displayMode,
+                           foreach: employees ,as:"employee"}'> </ul>
+        </div>
+
+        <script type="text/html" id="active">
+            <a data-bind="text:employee.name" class="active btn btn-success"></a>
+            <span data-bind="text:employee.active"></span>
+        </script>
+        <script type="text/html" id="inactive">
+            <a data-bind="text:employee.name" class="disabled btn btn-default"></a>
+              <span data-bind="text:employee.active"></span>
+        </script>
+    </div>
+    <script>
+        function Model() {
+            var self = this;
+            self.employees = ko.observableArray([{
+                name: "Kari",
+                active: ko.observable(true)
+            }, {
+                name: "Brynn",
+                active: ko.observable(false)
+            }, {
+                name: "Nora",
+                active: ko.observable(false)
+            }]);
+            self.displayMode = function(employee) {
+                // Initially "Kari" uses the "active" template, while the others use "inactive"
+                return employee.active() ? "active" : "inactive";
+            };
+
+        }
+        var model = new Model();
+        ko.applyBindings(model);
+
+    </script>
+</body>
+
+
+</html>

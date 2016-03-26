@@ -8,7 +8,7 @@ title: knockoutjs十三  focus checked绑定
 毕设加上班有点忙，不好意思，今天讲解的时focus和checked绑定，好久没去官网看看，发现他们已经更新了不少东西，这些我以前都没有用过，就找个官方的例子讲解一下。
     
 ```
-        <input data-bind="hasFocus: isSelected" />
+ <input data-bind="hasFocus: isSelected" />
         <button data-bind="click: setIsSelected">Focus programmatically</button>
         <span data-bind="visible: isSelected">The textbox has focus</span>
         <p>
@@ -37,23 +37,22 @@ title: knockoutjs十三  focus checked绑定
         var model = new Model();
         ko.applyBindings(model);
     </script>
-    
 ```
 focus是很简单的，他只是检测一个元素是否选中，yes返回true，no返回false，就这这么简单，你设置true就选中，设置false就不选中。官方的例子是告诉我们可以作为点击编辑，原本是一个文本，点击之后选中他，让他变为input框，这确实是不错的一个用法。我以前没有使用过所以我也想不出还有其他的什么作用。
-```
 
- <p>Send me spam:
-            <input type="checkbox" data-bind="checked: wantsSpam" />
+	<p>Send me spam:
+           	<input type="checkbox" data-bind="checked: wantsSpam" />
         </p>
         <div data-bind="visible: wantsSpam">
             Preferred flavors of spam:
             <div>
-                <input type="checkbox" value="cherry" data-bind="checked: spamFlavors" /> Cherry</div>
+                	<input type="checkbox" value="cherry" data-bind="checked: spamFlavors" /> Cherry
+	    </div>
             <div>
-                <input type="checkbox" value="almond" data-bind="checked: spamFlavors" /> Almond</div>
-            <div>
-                <input type="checkbox" value="msg" data-bind="checked: spamFlavors" /> Monosodium Glutamate</div>
-        </div>
+               	 <input type="checkbox" value="almond" data-bind="checked: spamFlavors" /> Almond</div>
+            	<div>
+                	<input type="checkbox" value="msg" data-bind="checked: spamFlavors" /> Monosodium Glutamate</div>
+        	</div>
         <script>
        function Model() {
             var self = this;
@@ -64,14 +63,14 @@ focus是很简单的，他只是检测一个元素是否选中，yes返回true�
         ko.applyBindings(model);
         </script>
 
-```
-checked 比较有内涵啊 ，官方比较多，而且确实radio和checkbox时比较烦的东西，表单中反选是很恶心的一件事。但是我看到ko的这个很厉害，checkbox设置你需要选中的只需要把他的值放入一个数组，那么他就会帮你选中，简单了我们反选的过程，而且选中的值直接放入一个数组，操作简单。如果是radio只要checked的值是true就会选中，false就不会选中。当然你也可以设施一个非boolean值，那么radio中value和checked的值相等的，就会被选中，简单易懂。
-```
 
-<!-- ko foreach: items -->
+checked 比较有内涵啊 ，官方比较多，而且确实radio和checkbox时比较烦的东西，表单中反选是很恶心的一件事。但是我看到ko的这个很厉害，checkbox设置你需要选中的只需要把他的值放入一个数组，那么他就会帮你选中，简单了我们反选的过程，而且选中的值直接放入一个数组，操作简单。如果是radio只要checked的值是true就会选中，false就不会选中。当然你也可以设施一个非boolean值，那么radio中value和checked的值相等的，就会被选中，简单易懂。
+
+
+	<!-- ko foreach: items -->
     <input type="checkbox" data-bind="checkedValue: $data, checked: $root.chosenItems" />
     <span data-bind="text: itemName"></span>
-<!-- /ko -->
+	<!-- /ko -->
         <script>
        function Model() {
             var self = this;
@@ -87,7 +86,7 @@ checked 比较有内涵啊 ，官方比较多，而且确实radio和checkbox时�
         ko.applyBindings(model);
         </script>
 
-```
+
 checked绑定还提供了另一个参数checkedValue,这个参数就和checkbox或是radio中的value是一样的，但是这个checkedValue可以设置一个非string的值，可以是一个对象，那么你选中时chosenItems就是一个数组，你可以获取对象中想要的值，但是我发现反选却不容易，因为其中的对象都是引用，想比较他们不是那么容易，在使用时建议使用value设置值。
 
 最后几篇可能有点急躁，有误请联系我qq1357197829，我准备过一段时间把这个系列搬到github pages上了，到时候希望大家赏脸。代码托管在https://github.com/lushunming/knockoutJSDemo.git可以直接克隆。

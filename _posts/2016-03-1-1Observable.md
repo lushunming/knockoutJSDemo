@@ -1,0 +1,49 @@
+---
+layout: post
+title: knockoutjs一 关于knockoutjs
+---
+#knockoutjs一 关于knockoutjs
+=============
+ 实习期间，我们公司用的前端框架是knockoutjs，这是一种MVVM的框架。在使用的时候，发现中国关于它的资料很少。所以想写点关于它的文章。
+
+
+knockoutjs的主页：http://knockoutjs.com 。使用方法详见官网。
+	
+
+首先是入门，关于如何用observables创建viewModels。
+
+Model-View-View Model (MVVM) 是一种用来建立用户界面的设计模式。	
+
+        <div id="firstModel">
+    		div>The name is <span data-bind="text: personName"></span> </div>
+    		<div>His age is<span data-bind="text:personAge"></span></div>
+        </div>
+    
+这就是一个绑定的例子。
+而它对应的model是
+
+    <!--第一个model-->
+	<script>
+			var firstViewModel = {
+				personName: 'Bob',
+				personAge: 123
+			};
+	</script>
+
+
+最后在script的末尾加上ko.applyBindings(firstViewModel);进行绑定。
+ko.applyBindings(firstViewModel)这是用来激活knockout的，当然ko.applyBindings()可以传入第二个参数，代表你要将模板绑定到哪一块dom上
+，如ko.applyBindings(firstViewModel, $("#firstModel")[0]);就是把这个模板绑定到id为firstModel的dom上，注意用jquery选择器的时候需要加上`[0]`(因为用$("#firstModel")返回的是一个dom数组);
+如图：
+![1](http://img.blog.csdn.net/20151229232558678?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+如果你想设置一个双向绑定model可以设置成这样：
+
+    var secondViewModel = {
+				personName: ko.observable('Bob'),
+				personAge: ko.observable('123'),
+		};
+	
+这样只要你的model里的personName，personAge改变，那么view也会改变。而使用第一种viewmodel即使personName，personAge改变，view也不会改变。
+还有一些高级的应用，暂时先不介绍，在我的demo里有，github地址 https://github.com/lushunming/knockoutJSDemo.git可以直接克隆，我使用的hbuild编写，可以用hubild直接打开运行。
+第一次写写博客写的有点烂，有宝贵意见请提出。以后会不定期更新。

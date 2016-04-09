@@ -24,7 +24,7 @@
             <input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
         </p>
 
-        <button data-bind="enable: parseAreaCode(model.cellphoneNumber()) != '555'">
+        <button data-bind="enable: parseAreaCode(model.cellphoneNumber()) ">
             Do something
         </button>
 
@@ -32,7 +32,7 @@
     </div>
     <script>
         function parseAreaCode(number) {
-            return number;
+            return number!= '555';
         }
 
         function Model() {
